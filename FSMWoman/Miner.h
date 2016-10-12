@@ -8,6 +8,7 @@
 #include "BaseGameEntity.h"
 #include "Locations.h"
 #include "MinerOwnedState.h"
+#include "StateMachine.h"
 
 
 const int ComfortLevel  = 5;
@@ -17,13 +18,10 @@ const int TirednessThreshold = 5;
 
 
 
-
-class State;
-
 class Miner : public BaseGameEntity {
 private:
     //状态指针
-    State *m_pCurrentState;
+    StateMachine<Miner> *m_pStateMachine;
 
     //矿工当前所处的位置
     location_type m_Location;
@@ -41,15 +39,28 @@ private:
     int m_iFatigue;
 
 public:
+    Miner(int id):BaseGameEntity(id),
+                  m_Location(shack),
+                  m_iGoldCarried(0),
+                  m_iMoneyInBank(0),
+                  m_iThirst(0),
+                  m_iFatigue(0)
+    {
+        m_pStateMachine = new StateMachine<Miner>(this);
 
+        m_pStateMachine->SetCurrentState(GoHomeAndSleepTilRested::Instance());
+    }
 
     ~Miner();
 
-    Miner(int ID);
+
 
     void Update();
 
-    void ChangeState(State *pNewState);
+    StateMachine<Miner>* GetFSM() const
+    {
+        return m_pStateMachine;
+    }
 
 
     //下面都是一些get set 方法

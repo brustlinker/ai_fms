@@ -7,6 +7,7 @@
 #include "Miner.h"
 #include "EntityNames.h"
 #include <iostream>
+
 using namespace std;
 
 
@@ -43,13 +44,13 @@ void EnterMineAndDigForNugget::Execute(Miner *pMiner)
     //采购了，就去银行存
     if(pMiner->PocketsFull())
     {
-        pMiner->ChangeState(VisitBankAndDepositGold::Instance());
+        pMiner->GetFSM()->ChangeState(VisitBankAndDepositGold::Instance());
     }
 
     //渴了就来
     if(pMiner->Thirsty())
     {
-        pMiner->ChangeState(QuenchThirst::Instance());
+        pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());
     }
 }
 
@@ -98,12 +99,12 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
         cout << "********" << endl;
         cout << "\n" << GetNameOfEntity(pMiner->ID()) << "WooHoo! Rich enough for now. Back home to mah li'lle lady";
 
-        pMiner->ChangeState(GoHomeAndSleepTilRested::Instance());
+        pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
     }
     //没挣够钱继续挖矿
     else
     {
-        pMiner->ChangeState(EnterMineAndDigForNugget::Instance());
+        pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
     }
 }
 
@@ -143,7 +144,7 @@ void GoHomeAndSleepTilRested::Execute(Miner* pMiner)
         cout<<"********"<<endl;
         cout<<"\n"<<GetNameOfEntity(pMiner->ID())<<":What a God darn fantastic nap! Time to find more gold";
 
-        pMiner->ChangeState(EnterMineAndDigForNugget::Instance());
+        pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
     }
 
     else
@@ -191,7 +192,7 @@ void QuenchThirst::Execute(Miner* pMiner)
         cout<<"********"<<endl;
         cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin liquer";
 
-        pMiner->ChangeState(EnterMineAndDigForNugget::Instance());
+        pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
     }
 
     else

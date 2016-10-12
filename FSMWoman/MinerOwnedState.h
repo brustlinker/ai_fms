@@ -9,7 +9,7 @@
 
 class Miner;
 
-class EnterMineAndDigForNugget:public State
+class EnterMineAndDigForNugget:public State<Miner>
 {
 private:
     EnterMineAndDigForNugget(){}
@@ -28,7 +28,7 @@ public:
 };
 
 
-class VisitBankAndDepositGold: public State
+class VisitBankAndDepositGold: public State<Miner>
 {
 private:
     VisitBankAndDepositGold(){}
@@ -45,7 +45,7 @@ public:
 };
 
 
-class GoHomeAndSleepTilRested:public State
+class GoHomeAndSleepTilRested:public State<Miner>
 {
 private:
     GoHomeAndSleepTilRested(){}
@@ -60,7 +60,7 @@ public:
 };
 
 
-class QuenchThirst:public State
+class QuenchThirst:public State<Miner>
 {
 private:
     QuenchThirst(){}
